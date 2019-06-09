@@ -1,5 +1,8 @@
 # pystructs
 
+[![Build Status](https://travis-ci.com/moreal/pystructs.svg?branch=master)](https://travis-ci.com/moreal/pystructs)
+[![codecov](https://codecov.io/gh/moreal/pystructs/branch/master/graph/badge.svg)](https://codecov.io/gh/moreal/pystructs)
+
 `pystructs` is useful `c-like struct` package for human
 
 ## How to install
