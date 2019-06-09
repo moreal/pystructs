@@ -7,8 +7,9 @@ with open('README.md', 'r') as f:
 setup(
     url='https://github.com/moreal/pystructs',
     name='pystructs',
-    version='0.1.0',
+    version='0.1.1',
     long_description=long_description,
+    long_description_content_type="text/markdown",
     description='c-like struct implementation for human',
     author='moreal',
     author_email='dev.moreal@gmail.com',
