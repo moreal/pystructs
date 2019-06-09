@@ -1,0 +1,14 @@
+language: python
+
+python:
+- 3.7-dev
+
+install:
+- pip install pipenv
+- pipenv install --dev
+
+script:
+- py.test --cov-report term --cov pystructs tests
+
+after_success:
+- codecov
