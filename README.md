@@ -14,10 +14,10 @@ $ pip install pystructs
 ## Example codes
 
 ```python
-from pystructs import fields, Struct
+from pystructs import fields
 
-class MyStruct(Struct):
-    byte = fields.BytesField(length=2)
+class MyStruct(fields.Struct):
+    byte = fields.BytesField(size=2)
 
 MyStruct(b'\x00\x01').byte  # b'\x00\x01'
 ```
