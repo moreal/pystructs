@@ -1,17 +1,16 @@
 import pytest
 
-from pystructs.fields.field import Field
-from pystructs.fields.struct import Struct
+from pystructs import fields
 
 
-class CustomStruct(Struct):
-    first = Field(2)
-    second = Field(2)
+class CustomStruct(fields.ConstantStruct):
+    first = fields.Field(2)
+    second = fields.Field(2)
 
 
 def test_field_will_raise_error():
     with pytest.raises(NotImplementedError):
-        struct = CustomStruct(b'1234')
+        struct = CustomStruct(b'')
         struct.first
 
 

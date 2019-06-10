@@ -1,9 +1,8 @@
-from pystructs.fields.struct import Struct
-from pystructs.fields.bytes import BytesField
+from pystructs import fields
 
 
-class CustomStruct(Struct):
-    bytes_field = BytesField(4)
+class CustomStruct(fields.ConstantStruct):
+    bytes_field = fields.BytesField(size=4)
 
 
 def test_bytes_field():

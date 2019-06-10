@@ -1,15 +1,14 @@
-import pytest
+from pystructs.fields import (
+    ConstantStruct,
+    BytesField,
+)
 
-from pystructs.fields.bytes import BytesField
-from pystructs.fields.field import Field
-from pystructs.fields.struct import Struct
 
-
-class InnerStruct(Struct):
+class InnerStruct(ConstantStruct):
     first = BytesField(4)
 
 
-class OuterStruct(Struct):
+class OuterStruct(ConstantStruct):
     inner_struct = InnerStruct()
 
 
@@ -22,4 +21,3 @@ def test_struct_has_size_by_fields():
     outer_struct = OuterStruct(b'')
     assert outer_struct.inner_struct.size == 4
     assert outer_struct.size == 4
-
