@@ -29,23 +29,9 @@ class ConstantStructMetaclass(type):
         return super().__new__(mcs, name, bases, attrs)
 
 
-class StructMetaclass(type):
+class VariableStructMetaclass(type):
     def __new__(mcs, name, bases, attrs: dict):
-        offset = 0
-
-        attrs['fields'] = dict()
-
-        for name, field in attrs.items():
-            if not isinstance(field, Field):
-                continue
-
-            attrs['fields'][name] = field
-
-            field.offset = offset
-            offset += field.size
-
-        attrs['size'] = offset
-
+        attrs['fields'] = dict(filter(lambda x: isinstance(x[1], Field), attrs.items()))
         return super().__new__(mcs, name, bases, attrs)
 
 
@@ -58,16 +44,27 @@ class Struct(BytesField):
 
     def __init__(self, _bytes: bytes = b''):
         self._bytes = _bytes
+        self._initialize()
 
     def __get__(self, instance, owner):
         self._bytes = instance.bytes[self.offset:self.offset+self.size]
         return self
+
+    def _initialize(self):
+        pass
 
 
 class ConstantStruct(Struct, metaclass=ConstantStructMetaclass):
     pass
 
 
-class VariableStruct(Struct, metaclass=StructMetaclass):
+class VariableStruct(Struct, metaclass=VariableStructMetaclass):
     def _initialize(self):
-        self.fields.values()
+        offset = 0
+
+        for field in self.fields.values():
+            field.offset = offset
+            offset += field.size
+
+        self.size = offset
+
