@@ -2,6 +2,7 @@ from typing import Dict, AnyStr
 
 from pystructs.fields import IntField, BytesField
 from pystructs.fields.field import Field
+from pystructs.interfaces import IConstant, IVariable
 
 __all__ = [
     'ConstantStruct',
@@ -19,8 +20,8 @@ class ConstantStructMetaclass(type):
             if not isinstance(field, Field):
                 continue
 
-            if isinstance(field, VariableStruct):
-                raise TypeError("ConstantStruct can't have VariableStruct")
+            if isinstance(field, IVariable):
+                raise TypeError("ConstantStruct can't have `IVariable` Field")
 
             attrs['fields'][name] = field
 
@@ -57,11 +58,11 @@ class Struct(BytesField):
         pass
 
 
-class ConstantStruct(Struct, metaclass=ConstantStructMetaclass):
+class ConstantStruct(Struct, IConstant, metaclass=ConstantStructMetaclass):
     pass
 
 
-class VariableStruct(Struct, metaclass=VariableStructMetaclass):
+class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
     def _initialize(self):
         offset = 0
 
