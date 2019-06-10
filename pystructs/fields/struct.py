@@ -19,6 +19,9 @@ class ConstantStructMetaclass(type):
             if not isinstance(field, Field):
                 continue
 
+            if isinstance(field, VariableStruct):
+                raise TypeError("ConstantStruct can't have VariableStruct")
+
             attrs['fields'][name] = field
 
             field.offset = offset
