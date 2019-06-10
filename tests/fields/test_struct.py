@@ -12,7 +12,7 @@ class OuterStruct(ConstantStruct):
     inner_struct = InnerStruct()
 
 
-def test_struct_can_have_recursive_stuct():
+def test_struct_can_have_recursive_struct():
     outer_struct = OuterStruct(b'1234')
     assert outer_struct.inner_struct.first == b'1234'
 
