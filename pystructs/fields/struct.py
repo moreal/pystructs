@@ -1,3 +1,4 @@
+from copy import deepcopy
 from functools import reduce
 from typing import Dict, AnyStr
 
@@ -49,7 +50,6 @@ class Struct(BytesField):
         return self._bytes
 
     def __init__(self, _bytes: bytes = b''):
-        super().__init__(0)
         self._bytes = _bytes
         self._initialize()
 
@@ -61,6 +61,9 @@ class Struct(BytesField):
         for _, field in self.fields.items():
             field.parent = self
 
+    def __getitem__(self, item):
+        return self.fields[item]
+
 
 class ConstantStruct(Struct, IConstant, metaclass=ConstantStructMetaclass):
     pass
@@ -69,6 +72,8 @@ class ConstantStruct(Struct, IConstant, metaclass=ConstantStructMetaclass):
 class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
     def _initialize(self):
         super()._initialize()
+
+        self.fields = deepcopy(self.fields)
 
         offset = 0
 
