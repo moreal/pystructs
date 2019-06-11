@@ -1,7 +1,9 @@
+from functools import reduce
 from typing import Dict, AnyStr
 
 from pystructs.fields import IntField, BytesField
 from pystructs.fields.field import Field
+from pystructs.fields.variable import VariableBytesField
 from pystructs.interfaces import IConstant, IVariable
 
 __all__ = [
@@ -67,8 +69,14 @@ class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
         offset = 0
 
         for field in self.fields.values():
+            if isinstance(field, VariableBytesField):
+                field.size = deepattr(self, field.related_field)
+
             field.offset = offset
             offset += field.size
 
         self.size = offset
 
+
+def deepattr(obj: object, attrpath: AnyStr) -> object:
+    return reduce(getattr, attrpath.split('.'), obj)
