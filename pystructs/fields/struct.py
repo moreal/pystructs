@@ -1,11 +1,11 @@
 from copy import deepcopy
-from functools import reduce
 from typing import Dict, AnyStr
 
 from pystructs.fields import IntField, BytesField
 from pystructs.fields.field import Field
 from pystructs.fields.variable import VariableBytesField
 from pystructs.interfaces import IConstant, IVariable
+from pystructs.utils import deepattr
 
 __all__ = [
     'ConstantStruct',
@@ -85,7 +85,3 @@ class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
             offset += field.size
 
         self.size = offset
-
-
-def deepattr(obj: object, attrpath: AnyStr) -> object:
-    return reduce(getattr, attrpath.split('.'), obj)
