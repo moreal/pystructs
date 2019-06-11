@@ -49,6 +49,7 @@ class Struct(BytesField):
         return self._bytes
 
     def __init__(self, _bytes: bytes = b''):
+        super().__init__(0)
         self._bytes = _bytes
         self._initialize()
 
@@ -57,7 +58,8 @@ class Struct(BytesField):
         return self
 
     def _initialize(self):
-        pass
+        for _, field in self.fields.items():
+            field.parent = self
 
 
 class ConstantStruct(Struct, IConstant, metaclass=ConstantStructMetaclass):
@@ -66,6 +68,8 @@ class ConstantStruct(Struct, IConstant, metaclass=ConstantStructMetaclass):
 
 class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
     def _initialize(self):
+        super()._initialize()
+
         offset = 0
 
         for field in self.fields.values():
