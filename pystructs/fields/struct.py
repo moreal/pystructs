@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Dict, AnyStr
+from typing import Dict, AnyStr, Union
 
 from pystructs import utils
 from pystructs.fields import IntField, BytesField
@@ -42,7 +42,7 @@ class VariableStructMetaclass(type):
 
 
 class Struct(BytesField):
-    fields: Dict[AnyStr, Field]
+    fields: Dict[Union[AnyStr, int], Field]
 
     @property
     def bytes(self):
@@ -63,6 +63,10 @@ class Struct(BytesField):
             raise AttributeError(item)
 
     def _initialize(self):
+        self.fields = deepcopy(self.fields)
+        self._initialize_parent_of_fields()
+
+    def _initialize_parent_of_fields(self):
         for _, field in self.fields.items():
             field.parent = self
 
@@ -73,13 +77,16 @@ class ConstantStruct(Struct, IConstant, metaclass=ConstantStructMetaclass):
 
 class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
     def _initialize(self):
-        super()._initialize()
+        self._initialize_parent_of_fields()
+        self._calculate_offset_and_size()
 
-        self.fields = deepcopy(self.fields)
-
+    def _calculate_offset_and_size(self):
         offset = 0
 
         for name, field in self.fields.items():
+            if isinstance(field, VariableStruct) and not field.is_root:
+                field._initialize()
+
             field.offset = offset
             offset += field.size
 
