@@ -8,5 +8,6 @@ class Field:
     def fetch(self):
         raise NotImplementedError()
 
+    @property
     def is_root(self) -> bool:
         return self.parent is None
