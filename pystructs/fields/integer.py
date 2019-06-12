@@ -7,8 +7,8 @@ class IntField(BytesField):
     def __init__(self, byteorder='little'):
         self.byteorder = byteorder
 
-    def __get__(self, instance, owner) -> int:
-        return int.from_bytes(super().__get__(instance, owner), self.byteorder)
+    def fetch(self) -> int:
+        return int.from_bytes(super().fetch(), self.byteorder)
 
 
 class Int32Field(IntField):

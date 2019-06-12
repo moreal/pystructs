@@ -10,6 +10,5 @@ class StringField(BytesField):
 
         self.encoding = encoding
 
-    def __get__(self, instance, owner) -> AnyStr:
-        bytes = super().__get__(instance, owner)
-        return bytes.decode(self.encoding)
+    def fetch(self) -> AnyStr:
+        return super().fetch().decode(self.encoding)

@@ -17,6 +17,8 @@ __all__ = [
 class ConstantStructMetaclass(type):
     def __new__(mcs, name, bases, attrs: dict):
         attrs = utils.filter_fields(attrs)
+        attrs = utils.delete_fields(attrs)
+
         offset = 0
 
         for name, field in attrs['fields'].items():
@@ -34,8 +36,8 @@ class ConstantStructMetaclass(type):
 class VariableStructMetaclass(type):
     def __new__(mcs, name, bases, attrs: dict):
         attrs = utils.filter_fields(attrs)
-        for name in attrs['fields'].keys():
-            del attrs[name]
+        attrs = utils.delete_fields(attrs)
+
         return super().__new__(mcs, name, bases, attrs)
 
 
@@ -50,9 +52,15 @@ class Struct(BytesField):
         self._bytes = _bytes
         self._initialize()
 
-    def __get__(self, instance, owner):
-        self._bytes = instance.bytes[self.offset:self.offset+self.size]
+    def fetch(self):
+        self._bytes = self.parent.bytes[self.offset:self.offset+self.size]
         return self
+
+    def __getattr__(self, item):
+        try:
+            return self.fields[item].fetch()
+        except KeyError:
+            raise AttributeError(item)
 
     def _initialize(self):
         for _, field in self.fields.items():
@@ -76,9 +84,3 @@ class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
             offset += field.size
 
         self.size = offset
-
-    def __getattr__(self, item) -> Field:
-        try:
-            return self.fields[item].__get__(self, None)
-        except KeyError:
-            raise AttributeError(item)

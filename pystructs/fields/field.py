@@ -5,7 +5,7 @@ class Field:
     def __init__(self, size: int):
         self.size = size
 
-    def __get__(self, instance, owner):
+    def fetch(self):
         raise NotImplementedError()
 
     def is_root(self) -> bool:
