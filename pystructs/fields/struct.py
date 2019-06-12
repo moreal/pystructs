@@ -1,6 +1,7 @@
 from copy import deepcopy
 from typing import Dict, AnyStr
 
+from pystructs import utils
 from pystructs.fields import IntField, BytesField
 from pystructs.fields.field import Field
 from pystructs.fields.variable import VariableBytesField
@@ -15,18 +16,12 @@ __all__ = [
 
 class ConstantStructMetaclass(type):
     def __new__(mcs, name, bases, attrs: dict):
+        attrs = utils.filter_fields(attrs)
         offset = 0
 
-        attrs['fields'] = dict()
-
-        for name, field in attrs.items():
-            if not isinstance(field, Field):
-                continue
-
+        for name, field in attrs['fields'].items():
             if isinstance(field, IVariable):
                 raise TypeError("ConstantStruct can't have `IVariable` Field")
-
-            attrs['fields'][name] = field
 
             field.offset = offset
             offset += field.size
@@ -38,7 +33,9 @@ class ConstantStructMetaclass(type):
 
 class VariableStructMetaclass(type):
     def __new__(mcs, name, bases, attrs: dict):
-        attrs['fields'] = dict(filter(lambda x: isinstance(x[1], Field), attrs.items()))
+        attrs = utils.filter_fields(attrs)
+        for name in attrs['fields'].keys():
+            del attrs[name]
         return super().__new__(mcs, name, bases, attrs)
 
 
@@ -61,9 +58,6 @@ class Struct(BytesField):
         for _, field in self.fields.items():
             field.parent = self
 
-    def __getitem__(self, item):
-        return self.fields[item]
-
 
 class ConstantStruct(Struct, IConstant, metaclass=ConstantStructMetaclass):
     pass
@@ -77,11 +71,14 @@ class VariableStruct(Struct, IVariable, metaclass=VariableStructMetaclass):
 
         offset = 0
 
-        for field in self.fields.values():
-            if isinstance(field, VariableBytesField):
-                field.size = deepattr(self, field.related_field)
-
+        for name, field in self.fields.items():
             field.offset = offset
             offset += field.size
 
         self.size = offset
+
+    def __getattr__(self, item) -> Field:
+        try:
+            return self.fields[item].__get__(self, None)
+        except KeyError:
+            raise AttributeError(item)
