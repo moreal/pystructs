@@ -2,9 +2,15 @@ from pystructs.fields.field import Field
 
 
 class BytesField(Field):
+    __bytes: bytes  # bytes of root field
+
     @property
-    def bytes(self):
+    def bytes(self) -> bytes:
         return self.__bytes[self.offset:self.offset+self.size]
+
+    @bytes.setter
+    def bytes(self, value: bytes):
+        self.__bytes = value
 
     def fetch(self) -> bytes:
         return self.bytes

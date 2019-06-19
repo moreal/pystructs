@@ -3,7 +3,6 @@ from __future__ import annotations
 
 class Field:
     __prev: Field
-    __bytes: bytes  # bytes of root field
     __size: int
 
     def __init__(self, size: int):
