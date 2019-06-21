@@ -1,13 +1,13 @@
-from functools import reduce
 from typing import AnyStr
 
-from pystructs.fields import BytesField, IntField, Field
+from pystructs.fields import BytesField
 from pystructs.interfaces import IVariable
 from pystructs.utils import deepattr
 
 
 class VariableBytesField(BytesField, IVariable):
     def __init__(self, related_field: AnyStr):
+        super().__init__(0)
         self.related_field = related_field
 
     @property
