@@ -13,7 +13,7 @@ class BytesField(Field):
         self.bytes = None
 
     def initialize(self, root: BytesField):
-        self.bytes = root.fetch()
+        self.bytes = root.bytes
 
     def fetch(self) -> bytes:
         return self.bytes[self.offset:self.offset+self.size]
