@@ -9,7 +9,10 @@ def constant_struct():
     class CustomStruct(fields.Struct):
         multiple_field = fields.MultipleField(4, fields.Int32Field())
 
-    return CustomStruct(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+    struct = CustomStruct(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+    struct.initialize()
+
+    return struct
 
 
 @pytest.fixture
@@ -18,7 +21,10 @@ def variable_struct():
         count = Int32Field(byteorder='big')
         multiple_field = fields.MultipleField("count", fields.Int32Field())
 
-    return CustomStruct(b'\x00\x00\x00\x04\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01')
+    struct = CustomStruct(b'\x00\x00\x00\x04\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01')
+    struct.initialize()
+
+    return struct
 
 
 def test_multiple_field_set_size_automatically(constant_struct):

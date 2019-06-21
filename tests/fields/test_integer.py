@@ -6,6 +6,7 @@ def test_int32_field_little_byteorder():
         field = fields.Int32Field(byteorder='little')
 
     struct = CustomStruct(b'\x01\x00\x00\x00')
+    struct.initialize()
     assert struct.field == 1
 
 
@@ -14,6 +15,7 @@ def test_int32_field_big_byteorder():
         field = fields.Int32Field(byteorder='big')
 
     struct = CustomStruct(b'\x00\x00\x00\x01')
+    struct.initialize()
     assert struct.field == 1
 
 
@@ -22,6 +24,7 @@ def test_int64_field_little_byteorder():
         field = fields.Int64Field(byteorder='little')
 
     struct = CustomStruct(b'\x01\x00\x00\x00\x00\x00\x00\x00')
+    struct.initialize()
     assert struct.field == 1
 
 
@@ -30,4 +33,5 @@ def test_int64_field_big_byteorder():
         field = fields.Int64Field(byteorder='big')
 
     struct = CustomStruct(b'\x00\x00\x00\x00\x00\x00\x00\x01')
+    struct.initialize()
     assert struct.field == 1

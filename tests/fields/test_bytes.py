@@ -6,4 +6,6 @@ class CustomStruct(fields.Struct):
 
 
 def test_bytes_field():
-    assert CustomStruct(b'1234').bytes_field == b'1234'
+    struct = CustomStruct(b'1234')
+    struct.initialize()
+    assert struct.bytes_field == b'1234'

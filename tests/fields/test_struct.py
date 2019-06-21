@@ -11,7 +11,10 @@ def outer_struct():
     class OuterStruct(Struct):
         inner_struct = InnerStruct()
 
-    return OuterStruct(b'1234')
+    outer_struct = OuterStruct(b'1234')
+    outer_struct.initialize()
+
+    return outer_struct
 
 
 def test_struct_can_have_recursive_struct(outer_struct):
