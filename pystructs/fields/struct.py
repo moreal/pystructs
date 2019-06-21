@@ -6,7 +6,7 @@ from pystructs import utils
 from pystructs.fields import BytesField, Field
 
 __all__ = [
-    'Struct'
+    'Struct',
 ]
 
 
@@ -36,31 +36,38 @@ class Struct(BytesField, metaclass=StructMetaclass):
 
     def __init__(self, _bytes: bytes = b''):
         super().__init__(0)
-        self.__bytes = _bytes
+        self.bytes = _bytes
 
     def fetch(self) -> Struct:
         return self
 
     def __getattr__(self, item):
         try:
+            if item not in self.fields:
+                return getattr(super(), item)
             return self.fields[item].fetch()
         except KeyError:
             raise AttributeError(item)
 
-    def initialize(self, root: Struct):
+    def initialize(self, root: Struct = None):
+        if root is None:
+            root = self
+
         self.fields = deepcopy(self.fields)
-        for field in self.fields:
+        for field in self.fields.values():
             field.initialize(root)
+
         self.__link_fields()
 
     def __link_fields(self):
-        fields = self.fields
+        fields = list(self.fields.values())
         fields_count = len(fields)
 
         for index in range(fields_count - 1):
             fields[index+1].prev = fields[index]
 
-        fields[0].prev = VirtualStruct(self)
+        if fields_count > 0:
+            fields[0].prev = VirtualStruct(self)
 
     @property
     def size(self) -> int:
