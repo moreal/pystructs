@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from pystructs.fields import Struct
@@ -9,11 +9,12 @@ if TYPE_CHECKING:
 class Field:
     parent: Struct = None
 
-    __prev: Field
+    __prev: Optional[Field]
     __size: int
 
     def __init__(self, size: int):
         self.__size = size
+        self.__prev = None
 
     def fetch(self):
         raise NotImplementedError()
@@ -35,7 +36,7 @@ class Field:
 
     @property
     def offset(self) -> int:
-        return self.__prev.offset + self.__prev.size
+        return 0 if self.is_root else self.__prev.offset + self.__prev.size
 
     @property
     def size(self) -> int:
