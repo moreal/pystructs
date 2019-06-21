@@ -55,6 +55,7 @@ class Struct(BytesField, metaclass=StructMetaclass):
 
         self.fields = deepcopy(self.fields)
         for field in self.fields.values():
+            field.parent = self
             field.initialize(root)
 
         self.__link_fields()
