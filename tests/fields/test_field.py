@@ -3,7 +3,7 @@ import pytest
 from pystructs import fields
 
 
-class CustomStruct(fields.ConstantStruct):
+class CustomStruct(fields.Struct):
     first = fields.Field(2)
     second = fields.Field(2)
 

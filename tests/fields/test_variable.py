@@ -1,9 +1,9 @@
-from pystructs.fields import Int32Field, ConstantStruct, VariableStruct
+from pystructs.fields import Int32Field, Struct
 from pystructs.fields.variable import VariableBytesField
 
 
 def test_variable_bytes_field_has_variable_size():
-    class CustomStruct(VariableStruct):
+    class CustomStruct(Struct):
         length = Int32Field(byteorder='big')
         data = VariableBytesField(related_field='length')
 
