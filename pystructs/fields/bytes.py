@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pystructs.fields.field import Field
 
 
@@ -11,6 +13,9 @@ class BytesField(Field):
     @bytes.setter
     def bytes(self, value: bytes):
         self.__bytes = value
+
+    def initialize(self, root: BytesField):
+        self.__bytes = root.bytes
 
     def fetch(self) -> bytes:
         return self.bytes
