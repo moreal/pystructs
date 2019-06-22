@@ -18,19 +18,6 @@ class StructMetaclass(type):
         return super().__new__(mcs, name, bases, attrs)
 
 
-class VirtualStruct:
-    def __init__(self, struct: Struct):
-        self.__struct = struct
-
-    @property
-    def offset(self) -> int:
-        return self.__struct.offset
-
-    @property
-    def size(self) -> int:
-        return 0
-
-
 class Struct(BytesField, metaclass=StructMetaclass):
     fields: Dict[Union[AnyStr, int], Field]
 
@@ -73,3 +60,16 @@ class Struct(BytesField, metaclass=StructMetaclass):
     @property
     def size(self) -> int:
         return sum(map(lambda x: x.size, self.fields.values()))
+
+
+class VirtualStruct:
+    def __init__(self, struct: Struct):
+        self.__struct = struct
+
+    @property
+    def offset(self) -> int:
+        return self.__struct.offset
+
+    @property
+    def size(self) -> int:
+        return 0

@@ -20,7 +20,10 @@ class MultipleField(Struct, IVariable):
 
         self.field = field
 
-    def initialize(self, root: Struct):
+    def initialize(self, root: Struct = None):
+        if root is None:
+            raise TypeError("MultipleField can't be root field")
+
         if self.count is -1:
             self.count = utils.deepattr(self.parent, self.related_field)
 
