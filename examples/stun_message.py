@@ -11,7 +11,7 @@ class Attribute(fields.Struct):
 
 class StunMessage(fields.Struct):
     type = fields.BytesField(size=1)
-    length = fields.Int32Field(byteorder='little')
+    length = fields.Int32Field(byteorder='big')
     attributes: List[Attribute] = fields.MultipleField(count='length', field=Attribute())
 
 
@@ -22,5 +22,6 @@ message = StunMessage(
 
 message.initialize()
 
-print(message.attributes[0].type)
-print(message.attributes[1].type)
+print(message.length)
+print(message.attributes[0].length)
+print(message.attributes[1].length)

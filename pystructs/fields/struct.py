@@ -37,6 +37,8 @@ class Struct(BytesField, metaclass=StructMetaclass):
             raise AttributeError(item)
 
     def initialize(self, root: Struct = None):
+        self.__link_fields()
+
         if root is None:
             root = self
 
@@ -44,8 +46,6 @@ class Struct(BytesField, metaclass=StructMetaclass):
         for field in self.fields.values():
             field.parent = self
             field.initialize(root)
-
-        self.__link_fields()
 
     def __link_fields(self):
         fields = list(self.fields.values())

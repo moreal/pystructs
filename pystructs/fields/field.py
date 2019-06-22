@@ -36,7 +36,7 @@ class Field:
 
     @property
     def offset(self) -> int:
-        return 0 if self.is_root else self.__prev.offset + self.__prev.size
+        return 0 if self.is_root else (self.__prev.offset + self.__prev.size)
 
     @property
     def size(self) -> int:
