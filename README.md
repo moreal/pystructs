@@ -14,10 +14,22 @@ $ pip install pystructs
 ## Example codes
 
 ```python
+from typing import List
 from pystructs import fields
 
-class MyStruct(fields.Struct):
-    byte = fields.BytesField(size=2)
+class Attribute(fields.Struct):
+    type = fields.BytesField(size=1)
+    length = fields.Int32Field(byteorder='big')
+    value = fields.VariableBytesField(related_field='length')
 
-MyStruct(b'\x00\x01').byte  # b'\x00\x01'
+
+class StunMessage(fields.Struct):
+    type = fields.BytesField(size=1)
+    length = fields.Int32Field(byteorder='big')
+    attributes: List[Attribute] = fields.MultipleField(count='length', field=Attribute())
+
+message = StunMessage(<bytes>)
+message.initialize()
+
+# Just use!
 ```
