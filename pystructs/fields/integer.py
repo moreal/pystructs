@@ -2,9 +2,8 @@ from pystructs.fields.bytes import BytesField
 
 
 class IntField(BytesField):
-    size = 4
-
-    def __init__(self, byteorder='little'):
+    def __init__(self, size: int, byteorder='little'):
+        super().__init__(size)
         self.byteorder = byteorder
 
     def fetch(self) -> int:
@@ -12,8 +11,10 @@ class IntField(BytesField):
 
 
 class Int32Field(IntField):
-    size = 4
+    def __init__(self, **kwargs):
+        super().__init__(4, **kwargs)
 
 
 class Int64Field(IntField):
-    size = 8
+    def __init__(self, **kwargs):
+        super().__init__(8, **kwargs)
