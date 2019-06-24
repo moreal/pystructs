@@ -6,10 +6,22 @@
 Welcome to pystructs's documentation!
 =====================================
 
+Introduction
+------------
+
 .. toctree::
    :maxdepth: 2
 
-   api
+   user/intro
+
+Fields
+------
+
+.. toctree::
+   :maxdepth: 2
+
+   fields/field
+   fields/struct
 
 
 Indices and tables

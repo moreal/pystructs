@@ -19,13 +19,20 @@ class StructMetaclass(type):
 
 
 class Struct(BytesField, metaclass=StructMetaclass):
-    fields: Dict[Union[AnyStr, int], Field]
+    """
+    `struct` implementations that inherit BytesField
+
+    link fields and calculate offset and variable values automatically
+    """
+
+    #: Reflection of fields from struct
+    fields: 'Dict[Union[AnyStr, int], Field]' = {}
 
     def __init__(self, _bytes: bytes = b''):
         super().__init__(0)
         self.bytes = _bytes
 
-    def fetch(self) -> Struct:
+    def fetch(self) -> 'Struct':
         return self
 
     def __getattr__(self, item):
@@ -36,7 +43,13 @@ class Struct(BytesField, metaclass=StructMetaclass):
         except KeyError:
             raise AttributeError(item)
 
-    def initialize(self, root: Struct = None):
+    def initialize(self, root: 'Struct' = None):
+        """
+        link fields and set parent, initialize each fields
+
+        :param root: Struct object of root
+        :return:
+        """
         self.__link_fields()
 
         if root is None:
