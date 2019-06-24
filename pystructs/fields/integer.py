@@ -1,6 +1,13 @@
 from pystructs.fields.bytes import BytesField
 
 
+__all__ = [
+    "IntField",
+    "Int32Field",
+    "Int64Field",
+]
+
+
 class IntField(BytesField):
     def __init__(self, size: int, byteorder='little'):
         super().__init__(size)

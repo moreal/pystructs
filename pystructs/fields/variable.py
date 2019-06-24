@@ -5,6 +5,11 @@ from pystructs.interfaces import IVariable
 from pystructs.utils import deepattr
 
 
+__all__ = [
+    "VariableBytesField"
+]
+
+
 class VariableBytesField(BytesField, IVariable):
     def __init__(self, related_field: AnyStr):
         super().__init__(0)

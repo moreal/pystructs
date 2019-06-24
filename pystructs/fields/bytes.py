@@ -5,6 +5,11 @@ from typing import Optional
 from pystructs.fields.field import Field
 
 
+__all__ = [
+    "BytesField"
+]
+
+
 class BytesField(Field):
     bytes: Optional[bytes]  # bytes of root field
 
