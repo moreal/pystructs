@@ -1,8 +1,4 @@
-Development Interface
-=====================
-
-
-Fields
+Field
 ------
 
 .. module:: pystructs.fields
