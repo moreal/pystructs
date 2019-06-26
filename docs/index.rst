@@ -6,6 +6,28 @@
 Welcome to pystructs' documentation!
 =====================================
 
+.. code-block:: python
+
+   from typing import List
+   from pystructs import fields
+
+   class Attribute(fields.Struct):
+       type = fields.BytesField(size=1)
+       length = fields.Int32Field(byteorder='big')
+       value = fields.VariableBytesField(related_field='length')
+
+
+   class StunMessage(fields.Struct):
+       type = fields.BytesField(size=1)
+       length = fields.Int32Field(byteorder='big')
+       attributes: List[Attribute] = fields.MultipleField(count='length', field=Attribute())
+
+   message = StunMessage(<bytes>)
+   message.initialize()
+
+   # Just use!
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Getting Started
