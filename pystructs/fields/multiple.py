@@ -6,6 +6,11 @@ from pystructs.fields import Field, Struct
 from pystructs.interfaces import IVariable
 
 
+__all__ = [
+    "MultipleField",
+]
+
+
 class MultipleField(Struct, IVariable):
     def __init__(self, count: Union[int, AnyStr], field: Field):
         super().__init__()
