@@ -25,4 +25,4 @@ deploy:
   skip_existing: true
   on:
     tags: true
-    all_branches: true
+    branch: master
