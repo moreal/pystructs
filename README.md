@@ -1,6 +1,6 @@
 # pystructs
 
-[![Documentation Status](https://readthedocs.org/projects/pystructs/badge/?version=latest)](https://pystructs.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/pystructs/badge/?version=0.2.1)](https://pystructs.readthedocs.io/en/latest/?badge=0.2.1)
 [![Build Status](https://travis-ci.com/moreal/pystructs.svg?branch=master)](https://travis-ci.com/moreal/pystructs)
 [![codecov](https://codecov.io/gh/moreal/pystructs/branch/master/graph/badge.svg)](https://codecov.io/gh/moreal/pystructs)
 
