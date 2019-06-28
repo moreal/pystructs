@@ -2,7 +2,7 @@ from pystructs import fields
 
 
 def test_int8_field_little_byteorder():
-    class CustomStruct(fields.struct):
+    class CustomStruct(fields.Struct):
         field = fields.Int8Field(byteorder='little')
 
     struct = CustomStruct(b'\x01')
@@ -11,7 +11,7 @@ def test_int8_field_little_byteorder():
 
 
 def test_int16_field_little_byteorder():
-    class CustomStruct(fields.struct):
+    class CustomStruct(fields.Struct):
         field = fields.Int16Field(byteorder='little')
 
     struct = CustomStruct(b'\x01\x00')
@@ -20,7 +20,7 @@ def test_int16_field_little_byteorder():
     
 
 def test_int16_field_big_byteorder():
-    class CustomStruct(fields.struct):
+    class CustomStruct(fields.Struct):
         field = fields.Int16Field(byteorder='big')
 
     struct = CustomStruct(b'\x00\x01')
