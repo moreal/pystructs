@@ -18,13 +18,16 @@ class IntField(BytesField):
     def fetch(self) -> int:
         return int.from_bytes(super().fetch(), self.byteorder)
 
+
 class Int8Field(IntField):
     def __init__(self, **kwargs):
         super().__init__(1, **kwargs)
 
+
 class Int16Field(IntField):
     def __init__(self, **kwargs):
         super().__init__(2, **kwargs)
+
 
 class Int32Field(IntField):
     def __init__(self, **kwargs):
