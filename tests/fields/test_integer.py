@@ -19,7 +19,7 @@ def test_int16_field_little_byteorder():
     assert struct.field == 1
     
 
-def test_int16_field_little_byteorder():
+def test_int16_field_big_byteorder():
     class CustomStruct(fields.struct):
         field = fields.Int16Field(byteorder='big')
 
