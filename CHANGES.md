@@ -1,5 +1,9 @@
 # pystructs changelog
 
+## Version 0.3.0
+
+To be released.
+
 ## Version 0.2.1
 
 Just chore to be better for docs. Released on June 26, 2019.
