@@ -1,7 +1,6 @@
 from typing import AnyStr
 
 from pystructs.fields import BytesField
-from pystructs.interfaces import IVariable
 from pystructs.utils import deepattr
 
 
@@ -10,7 +9,7 @@ __all__ = [
 ]
 
 
-class VariableBytesField(BytesField, IVariable):
+class VariableBytesField(BytesField):
     def __init__(self, related_field: AnyStr):
         super().__init__(0)
         self.related_field = related_field

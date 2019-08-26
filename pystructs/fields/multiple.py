@@ -3,7 +3,6 @@ from typing import Union, AnyStr
 
 from pystructs import utils
 from pystructs.fields import Field, Struct
-from pystructs.interfaces import IVariable
 
 
 __all__ = [
@@ -11,7 +10,7 @@ __all__ = [
 ]
 
 
-class MultipleField(Struct, IVariable):
+class MultipleField(Struct):
     def __init__(self, count: Union[int, AnyStr], field: Field):
         super().__init__()
 
