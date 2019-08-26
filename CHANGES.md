@@ -4,6 +4,9 @@
 
 To be released.
 
+- `Struct` inheritance became available.
+- `Int8Field`, `Int16Field` was added
+
 ## Version 0.2.1
 
 Just chore to be better for docs. Released on June 26, 2019.
