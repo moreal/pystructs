@@ -30,9 +30,11 @@ class Struct(BytesField, metaclass=StructMetaclass):
     #: Reflection of fields from struct
     fields: 'Dict[Union[AnyStr, int], Field]' = {}
 
-    def __init__(self, _bytes: bytes = b''):
+    def __init__(self, _bytes: bytes = b'', auto_initialization=True):
         super().__init__(0)
         self.bytes = _bytes
+        if auto_initialization:
+            self.initialize()
 
     def fetch(self) -> 'Struct':
         return self

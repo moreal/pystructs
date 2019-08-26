@@ -12,7 +12,7 @@ __all__ = [
 
 class MultipleField(Struct):
     def __init__(self, count: Union[int, AnyStr], field: Field):
-        super().__init__()
+        super().__init__(auto_initialization=False)
 
         if isinstance(count, int):
             self.count: int = count
