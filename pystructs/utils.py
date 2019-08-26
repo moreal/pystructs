@@ -9,11 +9,12 @@ def deepattr(obj: object, attrpath: AnyStr) -> object:
 
 
 def filter_fields(attrs: dict) -> dict:
-    attrs['fields'] = dict(filter(lambda x: isinstance(x[1], Field), attrs.items()))
+    attrs['fields'].update(dict(filter(lambda x: isinstance(x[1], Field), attrs.items())))
     return attrs
 
 
 def delete_fields(attrs: dict) -> dict:
     for name in attrs['fields'].keys():
-        del attrs[name]
+        if name in attrs:
+            del attrs[name]
     return attrs

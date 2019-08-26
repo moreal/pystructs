@@ -12,6 +12,8 @@ __all__ = [
 
 class StructMetaclass(type):
     def __new__(mcs, name, bases, attrs: dict):
+        attrs['fields'] = getattr(bases[0], 'fields', {}).copy()
+
         attrs = utils.filter_fields(attrs)
         attrs = utils.delete_fields(attrs)
 
