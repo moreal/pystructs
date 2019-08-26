@@ -6,6 +6,7 @@ To be released.
 
 - `Struct` inheritance became available.
 - `Int8Field`, `Int16Field` was added
+- `Struct` became to let self initalize automatically
 
 ## Version 0.2.1
 
