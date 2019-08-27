@@ -2,7 +2,7 @@
 
 ## Version 0.3.0
 
-To be released.
+Released on August 27, 2019.
 
 - `Struct` inheritance became available.
 - `Int8Field`, `Int16Field` was added
