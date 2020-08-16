@@ -5,8 +5,8 @@
 Released on August 27, 2019.
 
 - `Struct` inheritance became available.
-- `Int8Field`, `Int16Field` was added
-- `Struct` became to let self initialize automatically
+- `Int8Field`, `Int16Field` was added.
+- `Struct` became to let self initialize automatically.
 
 ## Version 0.2.1
 
