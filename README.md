@@ -46,6 +46,6 @@ print(message.attributes[1].length)  # 3
 
 ## Contributing Guide
 
-You can see [CONTRIBUTING.md]
+You can see [CONTRIBUTING.md][contributing]
 
-[CONTRIBUTING.md]: ./CONTRIBUTING.md
+[contributing]: ./CONTRIBUTING.md
