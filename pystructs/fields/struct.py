@@ -6,13 +6,13 @@ from pystructs import utils
 from pystructs.fields import BytesField, Field
 
 __all__ = [
-    'Struct',
+    "Struct",
 ]
 
 
 class StructMetaclass(type):
     def __new__(mcs, name, bases, attrs: dict):
-        attrs['fields'] = getattr(bases[0], 'fields', {}).copy()
+        attrs["fields"] = getattr(bases[0], "fields", {}).copy()
 
         attrs = utils.filter_fields(attrs)
         attrs = utils.delete_fields(attrs)
@@ -28,15 +28,15 @@ class Struct(BytesField, metaclass=StructMetaclass):
     """
 
     #: Reflection of fields from struct
-    fields: 'Dict[Union[AnyStr, int], Field]' = {}
+    fields: "Dict[Union[AnyStr, int], Field]" = {}
 
-    def __init__(self, _bytes: bytes = b'', auto_initialization=True):
+    def __init__(self, _bytes: bytes = b"", auto_initialization=True):
         super().__init__(0)
         self.bytes = _bytes
         if auto_initialization:
             self.initialize()
 
-    def fetch(self) -> 'Struct':
+    def fetch(self) -> "Struct":
         return self
 
     def __getattr__(self, item):
@@ -47,7 +47,7 @@ class Struct(BytesField, metaclass=StructMetaclass):
         except KeyError:
             raise AttributeError(item)
 
-    def initialize(self, root: 'Struct' = None):
+    def initialize(self, root: "Struct" = None):
         """
         link fields and set parent, initialize each fields
 
@@ -69,7 +69,7 @@ class Struct(BytesField, metaclass=StructMetaclass):
         fields_count = len(fields)
 
         for index in range(fields_count - 1):
-            fields[index+1].prev = fields[index]
+            fields[index + 1].prev = fields[index]
 
         if fields_count > 0:
             fields[0].prev = VirtualStruct(self)

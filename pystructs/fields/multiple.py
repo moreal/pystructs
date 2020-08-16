@@ -37,4 +37,3 @@ class MultipleField(Struct):
 
     def fetch(self) -> list:
         return list(self.fields.values())
-

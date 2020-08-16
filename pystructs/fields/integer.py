@@ -11,7 +11,7 @@ __all__ = [
 
 
 class IntField(BytesField):
-    def __init__(self, size: int, byteorder='little'):
+    def __init__(self, size: int, byteorder="little"):
         super().__init__(size)
         self.byteorder = byteorder
 
