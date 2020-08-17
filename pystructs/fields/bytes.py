@@ -5,9 +5,7 @@ from typing import Optional
 from pystructs.fields.field import Field
 
 
-__all__ = [
-    "BytesField"
-]
+__all__ = ["BytesField"]
 
 
 class BytesField(Field):
@@ -21,4 +19,4 @@ class BytesField(Field):
         self.bytes = root.bytes
 
     def fetch(self) -> bytes:
-        return self.bytes[self.offset:self.offset+self.size]
+        return self.bytes[self.offset : self.offset + self.size]

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if ! command -v black >/dev/null
+then
+    echo "'black' seems not installed. You can install it manually with"\
+    "'pip install black' or 'pipenv install'."
+    exit -1
+fi
+
+black .

@@ -6,9 +6,7 @@ if TYPE_CHECKING:
     from pystructs.fields import Struct
 
 
-__all__ = [
-    "Field"
-]
+__all__ = ["Field"]
 
 
 class Field:
@@ -27,7 +25,7 @@ class Field:
         """
         raise NotImplementedError()
 
-    def initialize(self, root: 'Field'):
+    def initialize(self, root: "Field"):
         """
         process to initialize, eg. link_fields, set bytes of root field, etc...
 

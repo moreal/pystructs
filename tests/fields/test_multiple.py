@@ -7,10 +7,12 @@ from pystructs.fields import Int32Field
 @pytest.fixture
 def struct():
     class CustomStruct(fields.Struct):
-        count = Int32Field(byteorder='big')
+        count = Int32Field(byteorder="big")
         multiple_field = fields.MultipleField("count", fields.Int32Field())
 
-    struct = CustomStruct(b'\x00\x00\x00\x04\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01')
+    struct = CustomStruct(
+        b"\x00\x00\x00\x04\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01"
+    )
 
     return struct
 

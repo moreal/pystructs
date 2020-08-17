@@ -4,9 +4,7 @@ from pystructs.fields import BytesField
 from pystructs.utils import deepattr
 
 
-__all__ = [
-    "VariableBytesField"
-]
+__all__ = ["VariableBytesField"]
 
 
 class VariableBytesField(BytesField):

@@ -43,3 +43,9 @@ print(message.length)  # 2
 print(message.attributes[0].length)  # 3
 print(message.attributes[1].length)  # 3
 ```
+
+## Contributing Guide
+
+You can see [CONTRIBUTING.md][contributing]
+
+[contributing]: ./CONTRIBUTING.md

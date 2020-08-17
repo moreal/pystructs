@@ -9,7 +9,6 @@ __all__ = [
 
 
 class StringField(BytesField):
-
     def __init__(self, size, encoding="utf8"):
         super().__init__(size)
 
