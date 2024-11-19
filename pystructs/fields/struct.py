@@ -5,9 +5,7 @@ from typing import Dict, AnyStr, Union
 from pystructs import utils
 from pystructs.fields import BytesField, Field
 
-__all__ = [
-    "Struct",
-]
+__all__ = ("Struct",)
 
 
 class StructMetaclass(type):

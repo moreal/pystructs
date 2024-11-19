@@ -5,9 +5,7 @@ from pystructs import utils
 from pystructs.fields import Field, Struct
 
 
-__all__ = [
-    "MultipleField",
-]
+__all__ = ("MultipleField",)
 
 
 class MultipleField(Struct):
