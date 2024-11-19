@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from pystructs.fields import Struct
 
 
-__all__ = ["Field"]
+__all__ = ("Field",)
 
 
 class Field:

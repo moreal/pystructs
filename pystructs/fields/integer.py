@@ -1,13 +1,13 @@
 from pystructs.fields.bytes import BytesField
 
 
-__all__ = [
+__all__ = (
     "IntField",
     "Int8Field",
     "Int16Field",
     "Int32Field",
     "Int64Field",
-]
+)
 
 
 class IntField(BytesField):

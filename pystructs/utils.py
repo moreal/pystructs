@@ -4,6 +4,9 @@ from typing import AnyStr
 from pystructs.fields import Field
 
 
+__all__ = ("filter_fields", "delete_fields", "deepattr")
+
+
 def deepattr(obj: object, attrpath: AnyStr) -> object:
     return reduce(getattr, attrpath.split("."), obj)
 

@@ -5,7 +5,7 @@ from typing import Optional
 from pystructs.fields.field import Field
 
 
-__all__ = ["BytesField"]
+__all__ = ("BytesField",)
 
 
 class BytesField(Field):
