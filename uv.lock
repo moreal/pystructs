@@ -611,7 +611,7 @@ name = "pystructs"
 version = "0.3.0"
 source = { editable = "." }
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "black", version = "25.11.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "black", version = "25.12.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
@@ -622,13 +622,14 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "black", marker = "extra == 'dev'" },
-    { name = "codecov", marker = "extra == 'dev'" },
-    { name = "pytest", marker = "extra == 'dev'" },
-    { name = "pytest-cov", marker = "extra == 'dev'" },
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "black" },
+    { name = "codecov" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
 ]
-provides-extras = ["dev"]
 
 [[package]]
 name = "pytest"

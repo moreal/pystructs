@@ -3,7 +3,7 @@
 if ! command -v black >/dev/null
 then
     echo "'black' seems not installed. You can install it manually with"\
-    "'pip install black' or 'uv sync'."
+    "'pip install black' or 'uv sync --dev'."
     exit -1
 fi
 

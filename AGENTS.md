@@ -166,7 +166,7 @@ __all__ = (
 ```bash
 # Using uv (recommended)
 pip install uv
-uv sync
+uv sync --dev
 
 # Or install dev dependencies directly
 pip install -e ".[dev]"
