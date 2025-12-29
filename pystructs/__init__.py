@@ -4,7 +4,7 @@ from .fields import *
 __all__ = (
     "Field",
     "BytesField",
-    "IntegerField",
+    "IntField",
     "Struct",
     "StringField",
     "VariableBytesField",
