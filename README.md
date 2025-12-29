@@ -1,7 +1,7 @@
 # pystructs
 
 [![Documentation Status](https://readthedocs.org/projects/pystructs/badge/?version=0.2.1)](https://pystructs.readthedocs.io/en/latest/?badge=0.2.1)
-[![Build Status](https://travis-ci.com/moreal/pystructs.svg?branch=master)](https://travis-ci.com/moreal/pystructs)
+[![CI](https://github.com/moreal/pystructs/actions/workflows/ci.yml/badge.svg)](https://github.com/moreal/pystructs/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/moreal/pystructs/branch/master/graph/badge.svg)](https://codecov.io/gh/moreal/pystructs)
 [![slack](https://img.shields.io/badge/slack-pystructs-yellow.svg?logo=slack)](https://pystructs-slack-application.herokuapp.com/)
 
