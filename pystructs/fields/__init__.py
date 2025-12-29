@@ -10,7 +10,7 @@ from pystructs.fields.multiple import *
 __all__ = (
     "Field",
     "BytesField",
-    "IntegerField",
+    "IntField",
     "Struct",
     "StringField",
     "VariableBytesField",
