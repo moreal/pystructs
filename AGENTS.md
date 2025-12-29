@@ -14,7 +14,7 @@
 ### Version & Compatibility
 
 - Current version: 0.3.0
-- Python: 3.7+
+- Python: 3.9+
 - No runtime dependencies
 
 ---
@@ -164,12 +164,12 @@ __all__ = (
 ### Setup
 
 ```bash
-# Using pipenv (recommended)
-pip install pipenv
-pipenv install --dev
+# Using uv (recommended)
+pip install uv
+uv sync --dev
 
 # Or install dev dependencies directly
-pip install pytest pytest-cov codecov black
+pip install -e ".[dev]"
 ```
 
 ### Running Tests
@@ -279,8 +279,8 @@ def test_field_returns_expected_value(my_struct):
 
 ## CI/CD Information
 
-- **Travis CI**: Runs pytest with coverage on Python 3.7, 3.8, 3.9
+- **GitHub Actions**: Runs pytest with coverage on Python 3.9, 3.10, 3.11, 3.12
 - **GitHub Actions**: Runs Black linting on push/PR
 - **Codecov**: Coverage reporting
 - **Read the Docs**: Documentation hosting
-- **PyPI**: Deployment on tagged releases (master branch)
+- **PyPI**: Deployment on tagged releases (main branch)

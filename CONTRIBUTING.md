@@ -7,10 +7,10 @@
 Actually, there is no required environment to use.
 Because *pystructs* doesn't have any dependencies.
 
-If you want to follow my environment, you can use [pipenv][pipenv].
+If you want to follow my environment, you can use [uv][uv].
 If you use another tool, you should install below development dependencies:
 
-*   Python 3.7 or later
+*   Python 3.9 or later
 *   pytest
 *   pytest-cov
 *   codecov
@@ -23,4 +23,4 @@ when you build document. you should follow guide in below link.
 
 [make]: https://www.gnu.org/software/make
 [sphinx]: https://www.sphinx-doc.org/
-[pipenv]: https://github.com/pypa/pipenv
+[uv]: https://github.com/astral-sh/uv
