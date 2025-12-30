@@ -2,18 +2,18 @@
 
 ## Project Overview
 
-**pystructs** is a Python package providing C-like struct implementation for binary data parsing. It enables declarative definition of binary data structures and automatic parsing of byte streams.
+**pystructs** is a Django-like declarative binary parsing library for Python. Define binary data structures as classes and parse/serialize them with ease.
 
 ### Core Philosophy
 
-- **Zero runtime dependencies** - No external packages required at runtime
+- **Zero runtime dependencies** - Pure Python implementation
 - **Declarative API** - Define struct layouts as class attributes
-- **Automatic offset calculation** - Fields are linked and offsets computed automatically
-- **Composability** - Structs can be nested and combined with variable-length fields
+- **Bidirectional** - Both parse and serialize binary data
+- **Composability** - Structs can be nested with variable-length and conditional fields
 
 ### Version & Compatibility
 
-- Current version: 0.3.0
+- Current version: 0.4.0
 - Python: 3.9+
 - No runtime dependencies
 
@@ -24,34 +24,47 @@
 ### Class Hierarchy
 
 ```
-Field (abstract base)
-├── BytesField (concrete, reads raw bytes)
-│   ├── IntField (converts bytes to int)
-│   │   ├── Int8Field, Int16Field, Int32Field, Int64Field
-│   ├── StringField (converts bytes to string)
-│   └── Struct (composite field with nested fields)
-│       └── MultipleField (array of fields)
-└── VariableBytesField (variable-length data)
+BaseField (ABC)
+├── FixedField (fixed-size fields)
+│   ├── IntField → Int8, UInt8, Int16, UInt16, Int32, UInt32, Int64, UInt64
+│   ├── FloatField → Float32, Float64
+│   ├── FixedBytes
+│   ├── FixedString
+│   └── Bool
+├── Bytes (variable-size, uses Ref)
+├── String, NullTerminatedString
+├── Array (repeated fields)
+├── EmbeddedStruct (nested structs)
+├── Conditional (optional fields based on condition)
+├── Switch (tagged unions)
+├── Padding, Flags, Enum (special fields)
+└── BitField → Bit, Bits (bit-level parsing)
+
+Struct (metaclass=StructMeta)
+└── User-defined structs
+
+BitStruct (metaclass=BitStructMeta)
+└── User-defined bit-level structs
 ```
 
 ### Design Patterns in Use
 
-1. **Template Method** - `Field.fetch()` and `Field.initialize()` define the contract
-2. **Metaclass** - `StructMetaclass` automatically registers class attributes as fields
-3. **Composite** - `Struct` contains multiple `Field` instances
-4. **Lazy Initialization** - Fields compute values on `fetch()` call, not construction
-5. **Linked List** - Fields maintain `prev` references for offset calculation
+1. **Descriptor Protocol** - Fields implement `__get__`/`__set__` for attribute access
+2. **Metaclass** - `StructMeta` collects field definitions and processes `class Meta`
+3. **Composite** - `Struct` contains multiple `BaseField` instances
+4. **Reference System** - `Ref` class enables cross-field references
 
 ### Key Abstractions
 
 | Class | Purpose | Location |
 |-------|---------|----------|
-| `Field` | Abstract base defining `fetch()`, `initialize()`, `offset`, `size` | `pystructs/fields/field.py` |
-| `BytesField` | Concrete field reading raw bytes from buffer | `pystructs/fields/bytes.py` |
-| `Struct` | Composite field with automatic field linking | `pystructs/fields/struct.py` |
-| `StructMetaclass` | Extracts Field attributes into `fields` dict | `pystructs/fields/struct.py` |
-| `VariableBytesField` | Dynamic-size field referencing another field for length | `pystructs/fields/variable.py` |
-| `MultipleField` | Array/list of repeated fields | `pystructs/fields/multiple.py` |
+| `BaseField` | Abstract base for all fields | `pystructs/base.py` |
+| `FixedField` | Base for fixed-size fields | `pystructs/base.py` |
+| `Struct` | Base class for binary structures | `pystructs/struct.py` |
+| `StructMeta` | Metaclass that collects fields | `pystructs/struct.py` |
+| `Ref` | Reference to another field's value | `pystructs/ref.py` |
+| `SyncRule` | Automatic field synchronization | `pystructs/sync.py` |
+| `BitStruct` | Bit-level structure | `pystructs/fields/bitfields.py` |
 
 ---
 
@@ -59,29 +72,44 @@ Field (abstract base)
 
 ```
 pystructs/
-├── pystructs/                    # Main package
-│   ├── __init__.py              # Re-exports from fields
-│   ├── utils.py                 # Utilities: deepattr, filter_fields, delete_fields
+├── pystructs/
+│   ├── __init__.py              # Public API exports
+│   ├── base.py                  # BaseField, FixedField
+│   ├── struct.py                # Struct, StructMeta, StructOptions
+│   ├── ref.py                   # Ref, RefComparison, RefLogical
+│   ├── sync.py                  # SyncRule
+│   ├── validate.py              # Validators (Range, OneOf, etc.)
+│   ├── expressions.py           # Len, Value, Const, Checksum
+│   ├── exceptions.py            # Exception hierarchy
+│   ├── config.py                # Global configuration
 │   └── fields/
-│       ├── __init__.py          # Exports all field types
-│       ├── field.py             # Field abstract base class
-│       ├── bytes.py             # BytesField implementation
-│       ├── struct.py            # Struct and StructMetaclass
-│       ├── integer.py           # IntField and sized variants
-│       ├── string.py            # StringField
-│       ├── variable.py          # VariableBytesField
-│       └── multiple.py          # MultipleField
+│       ├── __init__.py          # Re-exports all field types
+│       ├── integers.py          # Int8, UInt8, Int16, UInt16, etc.
+│       ├── floats.py            # Float32, Float64
+│       ├── bytes_fields.py      # FixedBytes, Bytes
+│       ├── strings.py           # FixedString, String, NullTerminatedString
+│       ├── composite.py         # Array, EmbeddedStruct, Conditional, Switch
+│       ├── special.py           # Bool, Padding, Flags, Enum
+│       └── bitfields.py         # Bit, Bits, BitStruct, EmbeddedBitStruct
 ├── tests/
-│   └── fields/                  # Mirror structure of source
+│   ├── test_struct.py
+│   ├── test_ref.py
+│   ├── test_sync.py
+│   ├── test_validate.py
+│   ├── test_expressions.py
+│   └── fields/
+│       ├── test_integers.py
+│       ├── test_floats.py
 │       ├── test_bytes.py
-│       ├── test_field.py
-│       ├── test_integer.py
-│       ├── test_multiple.py
-│       ├── test_string.py
-│       ├── test_struct.py
-│       └── test_variable.py
+│       ├── test_strings.py
+│       ├── test_composite.py
+│       ├── test_special.py
+│       └── test_bitfields.py
 ├── examples/
-│   └── stun_message.py          # STUN protocol parsing example
+│   ├── basic_usage.py           # Basic usage examples
+│   ├── tcp_packet.py            # TCP packet parsing with BitStruct
+│   ├── stun_message.py          # STUN protocol example
+│   └── advanced_features.py     # Conditional, Switch, Validation
 └── docs/                        # Sphinx documentation
 ```
 
@@ -92,58 +120,85 @@ pystructs/
 ### Import Style
 
 ```python
-# Use relative imports within package
-from pystructs.fields import BytesField, Field
-from pystructs import utils
+# Direct imports (recommended)
+from pystructs import Struct, UInt8, UInt16, Bytes, Ref
 
-# External usage
-from pystructs import fields
-# or
-from pystructs.fields import Struct, BytesField, Int32Field
+# Or import specific modules
+from pystructs.fields import integers, composite
+from pystructs import validate
+```
+
+### Struct Definition Pattern
+
+```python
+from pystructs import Struct, UInt8, UInt16, Bytes, Ref, SyncRule
+
+class Packet(Struct):
+    class Meta:
+        endian = "big"  # or "little" (default)
+        sync_rules = [
+            SyncRule("length", from_field="data", compute=len),
+        ]
+
+    header = UInt8(default=0xFF)
+    length = UInt16()
+    data = Bytes(size=Ref("length"))
+
+# Parse from bytes
+packet = Packet.parse(raw_bytes)
+value = packet.header  # Direct attribute access
+
+# Create and serialize
+new_packet = Packet(header=0xAB, data=b"Hello")
+new_packet.sync()  # Apply sync rules
+raw = new_packet.to_bytes()
 ```
 
 ### Field Definition Pattern
 
 All new field types should:
 
-1. Inherit from `BytesField` (or `Field` for non-byte-backed fields)
-2. Override `fetch()` to return the parsed value
-3. Optionally override `initialize()` for setup logic
-4. Define `size` property if variable-length
+1. Inherit from `BaseField` (or `FixedField` for fixed-size)
+2. Implement `get_size(instance)` method
+3. Implement `parse(buffer, instance)` method
+4. Implement `serialize(value, instance)` method
 
 ```python
-class NewField(BytesField):
-    def __init__(self, size: int, custom_param):
-        super().__init__(size)
-        self.custom_param = custom_param
+from pystructs.base import FixedField
 
-    def fetch(self) -> ReturnType:
-        raw = super().fetch()  # Get bytes
-        return transform(raw)  # Return parsed value
+class NewField(FixedField):
+    size = 4  # Fixed size in bytes
+
+    def __init__(self, default=None, required=True, validators=None):
+        super().__init__(default=default, required=required, validators=validators)
+
+    def parse(self, buffer: BinaryIO, instance: Struct) -> Any:
+        data = buffer.read(self.size)
+        return transform(data)
+
+    def serialize(self, value: Any, instance: Struct) -> bytes:
+        return to_bytes(value)
 ```
 
-### Struct Definition Pattern
+### Variable-Length Fields with Ref
+
+Use `Ref` to reference other fields:
 
 ```python
-class MyStruct(fields.Struct):
-    field_a = fields.BytesField(size=4)
-    field_b = fields.Int32Field(byteorder='big')
-    # Fields are processed in definition order
-
-# Usage
-struct = MyStruct(binary_data)
-struct.initialize()  # Links fields and sets up parsing
-value = struct.field_a  # Calls field_a.fetch()
+class Packet(Struct):
+    length = UInt16()
+    data = Bytes(size=Ref("length"))  # Size from length field
+    count = UInt8()
+    items = Array(UInt32(), count=Ref("count"))  # Count from field
 ```
 
-### Variable-Length Fields
-
-Use `related_field` parameter to reference another field:
+### Conditional Fields
 
 ```python
-class VarStruct(fields.Struct):
-    length = fields.Int32Field(byteorder='big')
-    data = fields.VariableBytesField(related_field='length')
+class Message(Struct):
+    version = UInt8()
+    # Only present when version >= 2
+    extra = Conditional(UInt32(), when=Ref("version") >= 2)
 ```
 
 ### `__all__` Tuple Convention
@@ -179,10 +234,10 @@ pip install -e ".[dev]"
 pytest --cov-report term --cov pystructs tests
 
 # Run specific test file
-pytest tests/fields/test_struct.py
+pytest tests/fields/test_integers.py
 
 # Run specific test
-pytest tests/fields/test_struct.py::test_struct_can_have_recursive_struct
+pytest tests/test_struct.py::test_parse_simple_struct
 ```
 
 ### Code Formatting
@@ -199,23 +254,23 @@ black .
 
 ### Test Writing Pattern
 
-Tests use pytest fixtures and follow this structure:
-
 ```python
 import pytest
-from pystructs.fields import Struct, BytesField
+from pystructs import Struct, UInt8, UInt16
 
-@pytest.fixture
-def my_struct():
-    class CustomStruct(Struct):
-        field = BytesField(size=4)
+def test_parse_simple_struct():
+    class Simple(Struct):
+        value = UInt8()
 
-    struct = CustomStruct(b"1234")
-    struct.initialize()
-    return struct
+    result = Simple.parse(b"\x42")
+    assert result.value == 0x42
 
-def test_field_returns_expected_value(my_struct):
-    assert my_struct.field == b"1234"
+def test_serialize_struct():
+    class Simple(Struct):
+        value = UInt8(default=0x42)
+
+    s = Simple()
+    assert s.to_bytes() == b"\x42"
 ```
 
 ---
@@ -224,12 +279,13 @@ def test_field_returns_expected_value(my_struct):
 
 | File | Role | When to Modify |
 |------|------|----------------|
-| `pystructs/fields/field.py` | Base class contract | Adding new field lifecycle methods |
-| `pystructs/fields/struct.py` | Core parsing logic | Changing field linking or initialization |
-| `pystructs/fields/bytes.py` | Byte extraction | Rarely - foundation class |
-| `pystructs/utils.py` | Helper functions | Adding new utilities |
+| `pystructs/base.py` | BaseField, FixedField classes | Adding new field base types |
+| `pystructs/struct.py` | Struct, StructMeta, parse/serialize | Core parsing logic changes |
+| `pystructs/ref.py` | Ref, RefComparison | Field reference system |
+| `pystructs/sync.py` | SyncRule | Synchronization logic |
+| `pystructs/validate.py` | Validators | Adding new validators |
 | `pystructs/__init__.py` | Public API exports | Adding new public types |
-| `pystructs/fields/__init__.py` | Internal exports | Adding new field types |
+| `pystructs/fields/__init__.py` | Field re-exports | Adding new field types |
 
 ---
 
@@ -237,15 +293,14 @@ def test_field_returns_expected_value(my_struct):
 
 ### Adding a New Field Type
 
-1. Create file in `pystructs/fields/` (e.g., `newtype.py`)
-2. Inherit from appropriate base (`BytesField` for byte-backed fields)
-3. Implement `fetch()` method returning parsed value
-4. Override `size` property if variable-length
-5. Define `__all__` tuple with exported classes
-6. Add import to `pystructs/fields/__init__.py`
-7. Add to `__all__` tuple in both `fields/__init__.py` and `pystructs/__init__.py`
-8. Create corresponding test file in `tests/fields/`
-9. Run `black` for formatting
+1. Create or modify file in `pystructs/fields/`
+2. Inherit from `BaseField` or `FixedField`
+3. Implement `get_size()`, `parse()`, `serialize()` methods
+4. Define `__all__` tuple with exported classes
+5. Add import to `pystructs/fields/__init__.py`
+6. Add to `__all__` in `pystructs/__init__.py`
+7. Create tests in `tests/fields/`
+8. Run `black .` for formatting
 
 ### Modifying Existing Behavior
 
@@ -257,23 +312,25 @@ def test_field_returns_expected_value(my_struct):
 
 ### Common Pitfalls to Avoid
 
-1. **Forgetting `initialize()`** - Structs must call `initialize()` before accessing fields
+1. **Forgetting sync()** - Call `sync()` before `to_bytes()` when using SyncRule
 2. **Circular imports** - Use `TYPE_CHECKING` guard for type hints:
    ```python
    from typing import TYPE_CHECKING
    if TYPE_CHECKING:
-       from pystructs.fields import Struct
+       from pystructs.struct import Struct
    ```
-3. **Mutable class attributes** - `fields` dict is copied in `initialize()` via `deepcopy`
-4. **Byteorder** - Integer fields default to 'little', explicitly set for network protocols
+3. **Endianness** - Default is little-endian; use `class Meta: endian = "big"` for network protocols
+4. **Ref paths** - Use `.` for nested fields, `../` for parent, `/` for absolute paths
 
 ### Testing Checklist
 
-- [ ] Test with different byte orders (big/little) for numeric fields
-- [ ] Test edge cases (empty bytes, boundary values)
-- [ ] Test nested structs if applicable
-- [ ] Test variable-length fields with different sizes
-- [ ] Verify error handling (TypeError, AttributeError)
+- [ ] Test parsing from bytes
+- [ ] Test serialization to bytes
+- [ ] Test round-trip (parse → to_bytes → parse)
+- [ ] Test with different endianness
+- [ ] Test edge cases (empty data, boundary values)
+- [ ] Test validation if applicable
+- [ ] Test sync rules if applicable
 
 ---
 
