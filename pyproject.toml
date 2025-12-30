@@ -27,6 +27,11 @@ dev = [
     "codecov",
     "black",
 ]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinx-autodoc-typehints",
+]
 
 [build-system]
 requires = ["hatchling"]
