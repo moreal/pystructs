@@ -1,0 +1,40 @@
+version: 2
+updates:
+  # GitHub Actions 업데이트
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "03:00"
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    assignees:
+      - "moreal"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(deps):"
+      include: "scope"
+
+  # Python 패키지 업데이트
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "03:00"
+    open-pull-requests-limit: 10
+    rebase-strategy: "auto"
+    assignees:
+      - "moreal"
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "chore(deps):"
+      include: "scope"
+    # 주요 버전 업데이트는 별도 관리
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
