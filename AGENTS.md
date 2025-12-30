@@ -242,14 +242,20 @@ pytest tests/test_struct.py::test_parse_simple_struct
 
 ### Code Formatting
 
-Black is enforced via GitHub Actions:
+Ruff is enforced via GitHub Actions:
 
 ```bash
 # Check formatting
-black --check .
+ruff format --check .
 
 # Apply formatting
-black .
+ruff format .
+
+# Check linting
+ruff check .
+
+# Fix linting issues
+ruff check --fix .
 ```
 
 ### Test Writing Pattern
@@ -300,7 +306,7 @@ def test_serialize_struct():
 5. Add import to `pystructs/fields/__init__.py`
 6. Add to `__all__` in `pystructs/__init__.py`
 7. Create tests in `tests/fields/`
-8. Run `black .` for formatting
+8. Run `ruff format .` and `ruff check --fix .` for formatting
 
 ### Modifying Existing Behavior
 
@@ -308,7 +314,7 @@ def test_serialize_struct():
 2. Write new tests for changed/added behavior FIRST
 3. Make minimal changes to implementation
 4. Ensure all tests pass: `pytest tests/`
-5. Format code: `black .`
+5. Format code: `ruff format .` and `ruff check --fix .`
 
 ### Common Pitfalls to Avoid
 
@@ -337,7 +343,7 @@ def test_serialize_struct():
 ## CI/CD Information
 
 - **GitHub Actions**: Runs pytest with coverage on Python 3.9, 3.10, 3.11, 3.12
-- **GitHub Actions**: Runs Black linting on push/PR
+- **GitHub Actions**: Runs Ruff linting and formatting checks on push/PR
 - **Codecov**: Coverage reporting
 - **Read the Docs**: Documentation hosting
 - **PyPI**: Deployment on tagged releases (main branch)

@@ -159,11 +159,15 @@ class RefLogical:
     """Logical combination of RefComparison objects.
 
     Examples:
-        >>> field = Conditional(UInt32(), when=(Ref('version') >= 2) & (Ref('flags') != 0))
+        >>> cond = (Ref('version') >= 2) & (Ref('flags') != 0)
+        >>> field = Conditional(UInt32(), when=cond)
     """
 
     def __init__(
-        self, left: RefComparison | RefLogical, op: str, right: RefComparison | RefLogical
+        self,
+        left: RefComparison | RefLogical,
+        op: str,
+        right: RefComparison | RefLogical,
     ):
         self.left = left
         self.op = op

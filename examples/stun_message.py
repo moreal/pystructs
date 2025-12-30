@@ -29,24 +29,18 @@ STUN Attribute Format:
 """
 
 import os
-import struct
 from enum import IntEnum
-from typing import List, Optional
+from typing import Optional
 
 from pystructs import (
+    Bytes,
+    FixedBytes,
+    Ref,
     Struct,
     UInt8,
     UInt16,
     UInt32,
-    FixedBytes,
-    Bytes,
-    Ref,
-    Array,
-    EmbeddedStruct,
-    SyncRule,
-    Enum as EnumField,
 )
-
 
 # =============================================================================
 # STUN Constants
@@ -95,6 +89,7 @@ class AddressFamily(IntEnum):
 # =============================================================================
 # STUN Structures
 # =============================================================================
+
 
 class STUNHeader(Struct):
     """STUN message header (20 bytes).
@@ -202,12 +197,15 @@ class ErrorCodeValue(Struct):
 # Helper Functions
 # =============================================================================
 
+
 def generate_transaction_id() -> bytes:
     """Generate a random 96-bit transaction ID."""
     return os.urandom(12)
 
 
-def xor_address(ip_bytes: bytes, port: int, magic_cookie: int = STUN_MAGIC_COOKIE) -> tuple:
+def xor_address(
+    ip_bytes: bytes, port: int, magic_cookie: int = STUN_MAGIC_COOKIE
+) -> tuple:
     """XOR an address with the magic cookie.
 
     Args:
@@ -228,7 +226,9 @@ def xor_address(ip_bytes: bytes, port: int, magic_cookie: int = STUN_MAGIC_COOKI
     return x_address, x_port
 
 
-def decode_xor_address(x_ip_bytes: bytes, x_port: int, magic_cookie: int = STUN_MAGIC_COOKIE) -> tuple:
+def decode_xor_address(
+    x_ip_bytes: bytes, x_port: int, magic_cookie: int = STUN_MAGIC_COOKIE
+) -> tuple:
     """Decode an XOR'd address.
 
     Args:
@@ -380,7 +380,8 @@ def print_stun_message(data: bytes, title: str = "STUN Message"):
 
     print(f"\n{title}")
     print("=" * 60)
-    print(f"  Message Type:    {parsed['message_type'].name} (0x{parsed['message_type'].value:04X})")
+    msg_type = parsed["message_type"]
+    print(f"  Message Type:    {msg_type.name} (0x{msg_type.value:04X})")
     print(f"  Message Length:  {parsed['message_length']} bytes")
     print(f"  Magic Cookie:    {parsed['magic_cookie']}")
     print(f"  Transaction ID:  {parsed['transaction_id']}")
@@ -392,12 +393,15 @@ def print_stun_message(data: bytes, title: str = "STUN Message"):
             print(f"      Length: {attr['length']}")
             print(f"      Value:  {attr['value_hex']}")
             if "decoded" in attr:
-                print(f"      Decoded: {attr['decoded']['ip']}:{attr['decoded']['port']}")
+                print(
+                    f"      Decoded: {attr['decoded']['ip']}:{attr['decoded']['port']}"
+                )
 
 
 # =============================================================================
 # Demo
 # =============================================================================
+
 
 def demo_stun_binding():
     """Demonstrate STUN Binding Request/Response."""
@@ -433,15 +437,31 @@ def demo_parse_real_stun():
 
     # Real STUN Binding Request captured from network
     # (20 bytes, no attributes)
-    real_request = bytes([
-        0x00, 0x01,  # Message type: Binding Request
-        0x00, 0x00,  # Message length: 0
-        0x21, 0x12, 0xA4, 0x42,  # Magic cookie
-        # Transaction ID (12 bytes)
-        0x01, 0x02, 0x03, 0x04,
-        0x05, 0x06, 0x07, 0x08,
-        0x09, 0x0A, 0x0B, 0x0C,
-    ])
+    real_request = bytes(
+        [
+            0x00,
+            0x01,  # Message type: Binding Request
+            0x00,
+            0x00,  # Message length: 0
+            0x21,
+            0x12,
+            0xA4,
+            0x42,  # Magic cookie
+            # Transaction ID (12 bytes)
+            0x01,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x0A,
+            0x0B,
+            0x0C,
+        ]
+    )
 
     print(f"\nReal STUN request: {real_request.hex()}")
     print_stun_message(real_request, "Parsed Real Request")

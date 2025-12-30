@@ -10,25 +10,22 @@ This module demonstrates the fundamental features of pystructs:
 """
 
 from pystructs import (
+    Array,
+    Bytes,
+    FixedString,
+    Int16,
+    Ref,
     Struct,
+    SyncRule,
     UInt8,
     UInt16,
     UInt32,
-    Int8,
-    Int16,
-    Bytes,
-    FixedBytes,
-    FixedString,
-    Array,
-    Ref,
-    SyncRule,
-    Len,
 )
-
 
 # =============================================================================
 # Example 1: Simple Fixed-Size Struct
 # =============================================================================
+
 
 class SimpleHeader(Struct):
     """A simple fixed-size header structure.
@@ -67,6 +64,7 @@ def example_simple_struct():
 # =============================================================================
 # Example 2: Variable-Length Data with Ref
 # =============================================================================
+
 
 class Packet(Struct):
     """A packet with variable-length payload.
@@ -110,6 +108,7 @@ def example_variable_length():
 # Example 3: Arrays
 # =============================================================================
 
+
 class ScoreBoard(Struct):
     """A structure containing an array of scores."""
 
@@ -147,6 +146,7 @@ def example_arrays():
 # =============================================================================
 # Example 4: Endianness
 # =============================================================================
+
 
 class BigEndianHeader(Struct):
     """Network protocol header (big-endian)."""
@@ -192,6 +192,7 @@ def example_endianness():
 # Example 5: Strings
 # =============================================================================
 
+
 class UserRecord(Struct):
     """User record with string fields."""
 
@@ -226,6 +227,7 @@ def example_strings():
 # =============================================================================
 # Example 6: Nested Structs
 # =============================================================================
+
 
 class Point(Struct):
     """2D point coordinate."""

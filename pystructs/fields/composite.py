@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
-from typing import TYPE_CHECKING, Any, BinaryIO, Callable, Dict, List, Type, Union
+from typing import TYPE_CHECKING, Any, BinaryIO, Callable, Dict, List, Type
 
 from pystructs.base import BaseField
 from pystructs.ref import Ref, RefComparison, RefLogical
@@ -349,7 +348,6 @@ class Switch(BaseField):
         Returns:
             Normalized cases with all BaseField instances
         """
-        from pystructs.struct import Struct as StructClass
 
         normalized = {}
         for key, value in cases.items():

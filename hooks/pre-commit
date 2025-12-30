@@ -1,10 +1,11 @@
 #!/bin/bash
 
-if ! command -v black >/dev/null
+if ! command -v ruff >/dev/null
 then
-    echo "'black' seems not installed. You can install it manually with"\
-    "'pip install black' or 'uv sync --dev'."
+    echo "'ruff' seems not installed. You can install it manually with"\
+    "'pip install ruff' or 'uv sync --dev'."
     exit -1
 fi
 
-black .
+ruff format .
+ruff check --fix .

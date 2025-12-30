@@ -3,17 +3,16 @@
 import pytest
 
 from pystructs import (
+    Array,
+    Bytes,
+    Conditional,
+    EmbeddedStruct,
+    Ref,
     Struct,
+    Switch,
     UInt8,
     UInt16,
     UInt32,
-    Array,
-    Ref,
-    EmbeddedStruct,
-    Conditional,
-    Switch,
-    FixedBytes,
-    Bytes,
 )
 
 
@@ -106,7 +105,24 @@ class TestArray:
             count = UInt16()
             values = Array(UInt32(), count=Ref("count"))
 
-        original = bytes([0x03, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00])
+        original = bytes(
+            [
+                0x03,
+                0x00,
+                0x01,
+                0x00,
+                0x00,
+                0x00,
+                0x02,
+                0x00,
+                0x00,
+                0x00,
+                0x03,
+                0x00,
+                0x00,
+                0x00,
+            ]
+        )
         s = S.parse(original)
         assert s.count == 3
         assert s.values == [1, 2, 3]
@@ -151,7 +167,9 @@ class TestArrayWithMixedFields:
             count = UInt8()
             items = Array(UInt16(), count=Ref("count"))
 
-        raw = bytes([0xEF, 0xBE, 0xAD, 0xDE, 0x01, 0x03, 0x0A, 0x00, 0x14, 0x00, 0x1E, 0x00])
+        raw = bytes(
+            [0xEF, 0xBE, 0xAD, 0xDE, 0x01, 0x03, 0x0A, 0x00, 0x14, 0x00, 0x1E, 0x00]
+        )
         s = S.parse(raw)
         assert s.magic == 0xDEADBEEF
         assert s.version == 1
@@ -554,9 +572,7 @@ class TestSwitch:
         assert m1.payload.data == b"ABC"
 
         # Binary payload
-        raw2 = bytes(
-            [0x02, 0x04, 0x00, 0x01, 0x02, 0x03, 0x04]
-        )  # type=2, size=4, data
+        raw2 = bytes([0x02, 0x04, 0x00, 0x01, 0x02, 0x03, 0x04])  # type=2, size=4, data
         m2 = Message.parse(raw2)
         assert m2.payload.size == 4
         assert m2.payload.data == bytes([1, 2, 3, 4])

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, BinaryIO, Callable, List, Union
+from typing import TYPE_CHECKING, BinaryIO, Callable, List
 
 from pystructs.base import BaseField, FixedField
 from pystructs.exceptions import UnexpectedEOF

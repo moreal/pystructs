@@ -3,11 +3,11 @@
 import pytest
 
 from pystructs import (
-    Struct,
     Bit,
     Bits,
     BitStruct,
     EmbeddedBitStruct,
+    Struct,
     UInt8,
     UInt16,
 )

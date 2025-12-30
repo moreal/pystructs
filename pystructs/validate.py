@@ -87,7 +87,9 @@ class Range(FieldValidator):
         if self.min_val is not None and value < self.min_val:
             raise ValidationError(f"Value {value} is less than minimum {self.min_val}")
         if self.max_val is not None and value > self.max_val:
-            raise ValidationError(f"Value {value} is greater than maximum {self.max_val}")
+            raise ValidationError(
+                f"Value {value} is greater than maximum {self.max_val}"
+            )
 
     def __repr__(self) -> str:
         return f"Range({self.min_val}, {self.max_val})"
@@ -110,7 +112,9 @@ class OneOf(FieldValidator):
 
     def __call__(self, value: Any, instance: Struct) -> None:
         if value not in self.choices:
-            raise ValidationError(f"Value {value} is not in allowed choices {self.choices}")
+            raise ValidationError(
+                f"Value {value} is not in allowed choices {self.choices}"
+            )
 
     def __repr__(self) -> str:
         return f"OneOf({self.choices!r})"
@@ -133,7 +137,9 @@ class Regex(FieldValidator):
 
     def __call__(self, value: Any, instance: Struct) -> None:
         if not self.pattern.match(value):
-            raise ValidationError(f"Value '{value}' does not match pattern {self.pattern.pattern}")
+            raise ValidationError(
+                f"Value '{value}' does not match pattern {self.pattern.pattern}"
+            )
 
     def __repr__(self) -> str:
         return f"Regex({self.pattern.pattern!r})"
@@ -156,7 +162,9 @@ class BytePattern(FieldValidator):
 
     def __call__(self, value: Any, instance: Struct) -> None:
         if not value.startswith(self.pattern):
-            raise ValidationError(f"Bytes do not start with expected pattern {self.pattern!r}")
+            raise ValidationError(
+                f"Bytes do not start with expected pattern {self.pattern!r}"
+            )
 
     def __repr__(self) -> str:
         return f"BytePattern({self.pattern!r})"
@@ -214,12 +222,16 @@ class Consistency(Validator):
         if self.greater_than is not None:
             threshold = self.greater_than.evaluate(instance)
             if not (actual > threshold):
-                raise ValidationError(f"Field '{self.field}': {actual} is not > {threshold}")
+                raise ValidationError(
+                    f"Field '{self.field}': {actual} is not > {threshold}"
+                )
 
         if self.less_than is not None:
             threshold = self.less_than.evaluate(instance)
             if not (actual < threshold):
-                raise ValidationError(f"Field '{self.field}': {actual} is not < {threshold}")
+                raise ValidationError(
+                    f"Field '{self.field}': {actual} is not < {threshold}"
+                )
 
     def __repr__(self) -> str:
         parts = [f"field={self.field!r}"]
@@ -239,7 +251,8 @@ class Custom(Validator):
         >>> class Packet(Struct):
         ...     class Meta:
         ...         validators = [
-        ...             Custom(lambda self: self.version in (1, 2, 3), "Unsupported version"),
+        ...             Custom(lambda self: self.version in (1, 2, 3),
+        ...                    "Unsupported version"),
         ...         ]
     """
 

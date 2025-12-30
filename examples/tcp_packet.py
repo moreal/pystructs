@@ -27,23 +27,19 @@ TCP Header Format:
 """
 
 from pystructs import (
-    Struct,
-    UInt8,
-    UInt16,
-    UInt32,
-    Bytes,
-    Ref,
-    BitStruct,
     Bit,
     Bits,
+    BitStruct,
     EmbeddedBitStruct,
-    Conditional,
+    Struct,
+    UInt16,
+    UInt32,
 )
-
 
 # =============================================================================
 # TCP Flags using BitStruct
 # =============================================================================
+
 
 class TCPFlags(BitStruct):
     """TCP control flags (6 bits).
@@ -87,6 +83,7 @@ class TCPDataOffsetFlags(BitStruct):
 # =============================================================================
 # TCP Header
 # =============================================================================
+
 
 class TCPHeader(Struct):
     """TCP Header structure.
@@ -139,6 +136,7 @@ class TCPSegment(Struct):
 # =============================================================================
 # Helper Functions
 # =============================================================================
+
 
 def create_syn_packet(src_port: int, dst_port: int, seq_num: int) -> TCPHeader:
     """Create a TCP SYN packet for connection initiation."""
@@ -197,8 +195,9 @@ def print_tcp_header(header: TCPHeader, title: str = "TCP Header"):
     print(f"  Destination Port: {header.dst_port}")
     print(f"  Sequence Number:  {header.seq_num}")
     print(f"  Ack Number:       {header.ack_num}")
-    print(f"  Data Offset:      {header.data_offset_flags.data_offset} ({header.data_offset_flags.data_offset * 4} bytes)")
-    print(f"  Flags:            ", end="")
+    data_offset = header.data_offset_flags.data_offset
+    print(f"  Data Offset:      {data_offset} ({data_offset * 4} bytes)")
+    print("  Flags:            ", end="")
     flags = []
     if header.flags.urg:
         flags.append("URG")
@@ -221,6 +220,7 @@ def print_tcp_header(header: TCPHeader, title: str = "TCP Header"):
 # =============================================================================
 # Demo: TCP Three-Way Handshake
 # =============================================================================
+
 
 def demo_tcp_handshake():
     """Demonstrate TCP three-way handshake packet creation."""
@@ -270,17 +270,30 @@ def demo_parse_tcp_packet():
     print("=" * 60)
 
     # Raw TCP SYN packet (HTTP port 80)
-    raw_packet = bytes([
-        0xD4, 0x31,  # Source port: 54321
-        0x00, 0x50,  # Destination port: 80
-        0x00, 0x00, 0x03, 0xE8,  # Sequence number: 1000
-        0x00, 0x00, 0x00, 0x00,  # Ack number: 0
-        0x50,  # Data offset: 5 (20 bytes), reserved: 0
-        0x02,  # Flags: SYN only
-        0xFF, 0xFF,  # Window: 65535
-        0x00, 0x00,  # Checksum: 0 (not calculated)
-        0x00, 0x00,  # Urgent pointer: 0
-    ])
+    raw_packet = bytes(
+        [
+            0xD4,
+            0x31,  # Source port: 54321
+            0x00,
+            0x50,  # Destination port: 80
+            0x00,
+            0x00,
+            0x03,
+            0xE8,  # Sequence number: 1000
+            0x00,
+            0x00,
+            0x00,
+            0x00,  # Ack number: 0
+            0x50,  # Data offset: 5 (20 bytes), reserved: 0
+            0x02,  # Flags: SYN only
+            0xFF,
+            0xFF,  # Window: 65535
+            0x00,
+            0x00,  # Checksum: 0 (not calculated)
+            0x00,
+            0x00,  # Urgent pointer: 0
+        ]
+    )
 
     print(f"Raw packet ({len(raw_packet)} bytes): {raw_packet.hex()}")
 

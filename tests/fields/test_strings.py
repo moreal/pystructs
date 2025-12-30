@@ -2,8 +2,15 @@
 
 import pytest
 
-from pystructs import Struct, UInt8, UInt16, FixedString, String, NullTerminatedString, Ref
-from pystructs.exceptions import UnexpectedEOF, SerializationError
+from pystructs import (
+    FixedString,
+    NullTerminatedString,
+    Ref,
+    String,
+    Struct,
+    UInt8,
+)
+from pystructs.exceptions import SerializationError
 
 
 class TestFixedString:

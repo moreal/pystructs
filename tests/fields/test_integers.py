@@ -1,17 +1,16 @@
 """Tests for integer field types."""
 
 import pytest
-from io import BytesIO
 
 from pystructs import (
-    Struct,
     Int8,
-    UInt8,
     Int16,
-    UInt16,
     Int32,
-    UInt32,
     Int64,
+    Struct,
+    UInt8,
+    UInt16,
+    UInt32,
     UInt64,
 )
 from pystructs.exceptions import UnexpectedEOF

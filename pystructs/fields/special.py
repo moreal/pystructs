@@ -393,9 +393,7 @@ class Enum(BaseField):
             # This follows the "dumb by default" principle
             return value
 
-    def serialize(
-        self, value: _enum.IntEnum | int, instance: Struct
-    ) -> bytes:
+    def serialize(self, value: _enum.IntEnum | int, instance: Struct) -> bytes:
         """Serialize enum to bytes.
 
         Args:

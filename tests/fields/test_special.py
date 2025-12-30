@@ -2,9 +2,7 @@
 
 from enum import IntEnum
 
-import pytest
-
-from pystructs import Struct, Bool, Padding, Flags, FlagSet, Enum, UInt8, UInt16, Ref
+from pystructs import Bool, Enum, Flags, Padding, Ref, Struct, UInt8, UInt16
 
 
 class TestBool:

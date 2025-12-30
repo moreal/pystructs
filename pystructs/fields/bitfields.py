@@ -4,14 +4,13 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections import OrderedDict
-from io import BytesIO
 from typing import TYPE_CHECKING, Any, BinaryIO, Callable, Dict, List, Type, TypeVar
 
-from pystructs.base import BaseField, FixedField
-from pystructs.exceptions import ParseError, UnexpectedEOF
+from pystructs.base import FixedField
+from pystructs.exceptions import UnexpectedEOF
 
 if TYPE_CHECKING:
-    from pystructs.struct import Struct
+    pass
 
 __all__ = (
     "BitField",
@@ -388,7 +387,10 @@ class BitStruct(metaclass=BitStructMeta):
         """Set field value by attribute access."""
         if name.startswith("_"):
             super().__setattr__(name, value)
-        elif hasattr(self.__class__, "_bit_fields") and name in self.__class__._bit_fields:
+        elif (
+            hasattr(self.__class__, "_bit_fields")
+            and name in self.__class__._bit_fields
+        ):
             self._data[name] = value
         else:
             super().__setattr__(name, value)

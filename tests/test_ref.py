@@ -1,8 +1,6 @@
 """Tests for the Ref system."""
 
-import pytest
-
-from pystructs import Struct, UInt8, UInt16, UInt32, Ref
+from pystructs import Ref, Struct, UInt8, UInt16
 from pystructs.ref import RefComparison, RefLogical
 
 

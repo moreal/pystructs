@@ -2,7 +2,7 @@
 
 import pytest
 
-from pystructs import Struct, UInt8, UInt16, FixedBytes, Bytes, Ref
+from pystructs import Bytes, FixedBytes, Ref, Struct, UInt8, UInt16
 from pystructs.exceptions import UnexpectedEOF
 
 
@@ -130,8 +130,8 @@ class TestBytesWithStruct:
 
         raw = bytes([0x02, 0xAA, 0xBB, 0x03, 0xCC, 0xDD, 0xEE])
         s = S.parse(raw)
-        assert s.data1 == b"\xAA\xBB"
-        assert s.data2 == b"\xCC\xDD\xEE"
+        assert s.data1 == b"\xaa\xbb"
+        assert s.data2 == b"\xcc\xdd\xee"
 
     def test_round_trip_variable_bytes(self):
         """Round-trip with variable bytes."""

@@ -12,39 +12,37 @@ This module demonstrates advanced features:
 from enum import IntEnum
 
 from pystructs import (
+    Array,
+    Bit,
+    Bits,
+    BitStruct,
+    Bool,
+    Bytes,
+    Conditional,
+    Consistency,
+    Custom,
+    EmbeddedBitStruct,
+    EmbeddedStruct,
+    Enum,
+    Flags,
+    Len,
+    OneOf,
+    Padding,
+    Range,
+    Ref,
     Struct,
+    Switch,
+    SyncRule,
     UInt8,
     UInt16,
     UInt32,
-    Bytes,
-    FixedBytes,
-    FixedString,
-    Array,
-    Ref,
-    EmbeddedStruct,
-    Conditional,
-    Switch,
-    BitStruct,
-    Bit,
-    Bits,
-    EmbeddedBitStruct,
-    Bool,
-    Flags,
-    Enum,
-    Padding,
-    SyncRule,
-    Range,
-    OneOf,
-    Consistency,
-    Custom,
-    Len,
     ValidationErrors,
 )
-
 
 # =============================================================================
 # Example 1: Conditional Fields
 # =============================================================================
+
 
 class VersionedPacket(Struct):
     """Packet with version-dependent optional fields.
@@ -74,11 +72,18 @@ def example_conditional():
     print(f"  extended_header: {v1.extended_header} (None because version < 2)")
 
     # Version 2 packet (with extended header)
-    v2_data = bytes([
-        0x02, 0x0F,  # version=2, flags=15
-        0xEF, 0xBE, 0xAD, 0xDE,  # extended_header=0xDEADBEEF
-        0x00, 0x20,  # size=32
-    ])
+    v2_data = bytes(
+        [
+            0x02,
+            0x0F,  # version=2, flags=15
+            0xEF,
+            0xBE,
+            0xAD,
+            0xDE,  # extended_header=0xDEADBEEF
+            0x00,
+            0x20,  # size=32
+        ]
+    )
     v2 = VersionedPacket.parse(v2_data)
     print(f"Version 2: {v2}")
     print(f"  extended_header: 0x{v2.extended_header:08X}")
@@ -88,6 +93,7 @@ def example_conditional():
 # =============================================================================
 # Example 2: Switch (Tagged Unions)
 # =============================================================================
+
 
 class MessageType(IntEnum):
     TEXT = 1
@@ -148,21 +154,34 @@ def example_switch():
     print(f"  payload.data: {binary_msg.payload.data.hex()}")
 
     # Command message
-    cmd_data = bytes([
-        0x03,  # type=COMMAND
-        0x42,  # command_id
-        0x01, 0x00, 0x00, 0x00,  # param1=1
-        0x02, 0x00, 0x00, 0x00,  # param2=2
-    ])
+    cmd_data = bytes(
+        [
+            0x03,  # type=COMMAND
+            0x42,  # command_id
+            0x01,
+            0x00,
+            0x00,
+            0x00,  # param1=1
+            0x02,
+            0x00,
+            0x00,
+            0x00,  # param2=2
+        ]
+    )
     cmd_msg = Message.parse(cmd_data)
     print(f"Command message: type={cmd_msg.msg_type}")
-    print(f"  command_id={cmd_msg.payload.command_id}, params=({cmd_msg.payload.param1}, {cmd_msg.payload.param2})")
+    payload = cmd_msg.payload
+    print(
+        f"  command_id={payload.command_id}, "
+        f"params=({payload.param1}, {payload.param2})"
+    )
     print()
 
 
 # =============================================================================
 # Example 3: Validation
 # =============================================================================
+
 
 class ValidatedPacket(Struct):
     """Packet with comprehensive validation rules."""
@@ -232,6 +251,7 @@ def example_validation():
 # Example 4: BitStruct for Bit-Level Parsing
 # =============================================================================
 
+
 class ControlFlags(BitStruct):
     """Control flags packed into a single byte."""
 
@@ -278,11 +298,11 @@ def example_bitstruct():
     )
 
     print(f"Device ID: {device.device_id}")
-    print(f"Control flags:")
+    print("Control flags:")
     print(f"  enabled: {device.control.enabled}")
     print(f"  priority: {device.control.priority}")
     print(f"  mode: {device.control.mode}")
-    print(f"Status register:")
+    print("Status register:")
     print(f"  error_code: {device.status.error_code}")
     print(f"  warning_level: {device.status.warning_level}")
     print(f"  state: {device.status.state}")
@@ -302,6 +322,7 @@ def example_bitstruct():
 # =============================================================================
 # Example 5: Flags and Enums
 # =============================================================================
+
 
 class FileMode(IntEnum):
     READ = 1
@@ -344,11 +365,15 @@ def example_flags_enums():
         size=1024,
     )
 
-    print(f"File descriptor:")
+    print("File descriptor:")
     print(f"  mode: {fd.mode.name}")
     print(f"  permissions: {fd.permissions}")
     # Calculate raw value from the set of flag names
-    raw_value = sum(fd.permissions.flags[name] for name in fd.permissions) if hasattr(fd.permissions, 'flags') else sum(FileDescriptor.permissions.flags[name] for name in fd.permissions)
+    raw_value = (
+        sum(fd.permissions.flags[name] for name in fd.permissions)
+        if hasattr(fd.permissions, "flags")
+        else sum(FileDescriptor.permissions.flags[name] for name in fd.permissions)
+    )
     print(f"  permissions raw value: 0x{raw_value:04X}")
     print(f"  is_directory: {fd.is_directory}")
     print(f"  size: {fd.size}")
@@ -358,7 +383,7 @@ def example_flags_enums():
 
     # Check flags
     parsed = FileDescriptor.parse(raw)
-    print(f"\nParsed permissions check:")
+    print("\nParsed permissions check:")
     print(f"  OWNER_READ in perms: {'OWNER_READ' in parsed.permissions}")
     print(f"  OTHER_WRITE in perms: {'OTHER_WRITE' in parsed.permissions}")
     print()
@@ -367,6 +392,7 @@ def example_flags_enums():
 # =============================================================================
 # Example 6: Complex Nested Structure
 # =============================================================================
+
 
 class AttributeType(IntEnum):
     STRING = 1

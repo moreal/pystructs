@@ -14,7 +14,7 @@ If you use another tool, you should install below development dependencies:
 *   pytest
 *   pytest-cov
 *   codecov
-*   black
+*   ruff
 
 Also, it needs *[make][make]*, *[sphinx][sphinx]* with below command
 when you build document. you should follow guide in below link.

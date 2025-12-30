@@ -14,6 +14,7 @@ from pystructs.exceptions import (
     ValidationError,
     ValidationErrors,
 )
+from pystructs.expressions import BinaryOp, Checksum, Const, Expression, Len, Value
 from pystructs.fields import (
     Array,
     Bit,
@@ -47,7 +48,6 @@ from pystructs.fields import (
     UInt32,
     UInt64,
 )
-from pystructs.expressions import BinaryOp, Checksum, Const, Expression, Len, Value
 from pystructs.ref import Ref, RefComparison, RefLogical
 from pystructs.struct import Struct, StructMeta, StructOptions
 from pystructs.sync import SyncRule

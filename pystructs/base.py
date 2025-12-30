@@ -11,7 +11,7 @@ parse/serialize methods.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, BinaryIO, Callable, List, Optional, Protocol
+from typing import TYPE_CHECKING, Any, BinaryIO, List, Optional, Protocol
 
 if TYPE_CHECKING:
     from pystructs.struct import Struct

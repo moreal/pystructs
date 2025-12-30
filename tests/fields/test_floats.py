@@ -3,9 +3,7 @@
 import math
 import struct
 
-import pytest
-
-from pystructs import Struct, Float32, Float64, UInt8
+from pystructs import Float32, Float64, Struct, UInt8
 
 
 class TestFloat32:

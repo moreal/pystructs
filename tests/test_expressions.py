@@ -2,8 +2,8 @@
 
 import pytest
 
-from pystructs import Struct, UInt8, UInt16, UInt32, Bytes, Ref
-from pystructs.expressions import Len, Value, Const, Checksum, BinaryOp
+from pystructs import Bytes, Struct, UInt8
+from pystructs.expressions import Checksum, Const, Len, Value
 
 
 class TestLen:

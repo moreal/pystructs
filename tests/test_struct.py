@@ -2,8 +2,8 @@
 
 import pytest
 
-from pystructs import Struct, UInt8, UInt16, UInt32, Int32
-from pystructs.exceptions import TrailingDataError, SerializationError, UnexpectedEOF
+from pystructs import Int32, Struct, UInt8, UInt16, UInt32
+from pystructs.exceptions import SerializationError, TrailingDataError, UnexpectedEOF
 
 
 class TestStructMeta:

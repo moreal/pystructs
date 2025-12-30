@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import warnings
 from collections import OrderedDict
-from copy import deepcopy
 from dataclasses import dataclass, field
 from io import BytesIO
 from typing import Any, BinaryIO, Dict, List, Optional, Type, TypeVar

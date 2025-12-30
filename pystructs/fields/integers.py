@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import struct
-from typing import TYPE_CHECKING, Any, BinaryIO, Callable, List
+from typing import TYPE_CHECKING, BinaryIO, Callable, List
 
 from pystructs.base import FixedField
 from pystructs.config import get_config

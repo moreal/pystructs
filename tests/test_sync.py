@@ -1,8 +1,6 @@
 """Tests for the sync system."""
 
-import pytest
-
-from pystructs import Struct, UInt8, UInt16, UInt32, Bytes, Ref, SyncRule
+from pystructs import Bytes, Ref, Struct, SyncRule, UInt8, UInt16, UInt32
 
 
 class TestSyncRule:
@@ -162,9 +160,9 @@ class TestSyncComplexExamples:
 
         # Serialize and verify
         raw = packet.to_bytes()
-        assert raw[:4] == b"\xDE\xAD\xBE\xEF"  # magic (big-endian)
+        assert raw[:4] == b"\xde\xad\xbe\xef"  # magic (big-endian)
         assert raw[4] == 1  # version
-        assert raw[5:7] == b"\x00\x0D"  # payload_size = 13 (big-endian)
+        assert raw[5:7] == b"\x00\x0d"  # payload_size = 13 (big-endian)
         assert raw[7:] == b"Hello, World!"
 
     def test_sync_total_size(self):

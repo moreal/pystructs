@@ -1,7 +1,6 @@
 """Tests for base field classes."""
 
 import pytest
-from io import BytesIO
 
 from pystructs.base import BaseField, FixedField
 
