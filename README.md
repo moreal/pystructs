@@ -20,6 +20,7 @@
 
 ```bash
 pip install pystructs
+uv add pystructs
 ```
 
 ## Quick Start
