@@ -14,7 +14,7 @@
 ### Version & Compatibility
 
 - Current version: 0.4.0
-- Python: 3.9+
+- Python: 3.13+
 - No runtime dependencies
 
 ---
@@ -342,7 +342,7 @@ def test_serialize_struct():
 
 ## CI/CD Information
 
-- **GitHub Actions**: Runs pytest with coverage on Python 3.9, 3.10, 3.11, 3.12
+- **GitHub Actions**: Runs pytest with coverage on Python 3.13, 3.14
 - **GitHub Actions**: Runs Ruff linting and formatting checks on push/PR
 - **Codecov**: Coverage reporting
 - **Read the Docs**: Documentation hosting
