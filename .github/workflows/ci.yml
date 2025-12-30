@@ -52,5 +52,8 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@v5
     
-    - name: Build and publish to PyPI
+    - name: Build package
+      run: uv build
+    
+    - name: Publish to PyPI
       run: uv publish --trusted-publishing always
